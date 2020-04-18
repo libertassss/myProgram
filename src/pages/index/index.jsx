@@ -1,40 +1,43 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.less'
-import { AtTabBar } from 'taro-ui'
+import { AtTabBar, Picker } from 'taro-ui';
+import { userLogin, userRegister, getDeptList } from '../../server';
+import InitPage from '../../components/initPage';
+import BottomTabBar from '../../components/bottomTabBar';
 
 
 export default class Index extends Component {
   constructor(props){
     super(props);
-    this.tabList = [
-      { title: '首页', iconType: 'home', text: '' },
-      { title: '我的', iconType: 'user', text: '' },
-    ];
+   
     this.state = {
-      current: 0
+      current: 0,
+      openid: 0,
+      deptList: []
     }
   }
 
   componentWillMount () { }
 
   componentDidMount () { 
-    Taro.login({
-      success: function (res) {
-        console.log(res);
-        // if (res.code) {
-        //   //发起网络请求
-        //   Taro.request({
-        //     url: 'https://test.com/onLogin',
-        //     data: {
-        //       code: res.code
-        //     }
-        //   })
-        // } else {
-        //   console.log('登录失败！' + res.errMsg)
-        // }
-      }
-    })
+    const _this = this;
+    // Taro.login({
+    //   success: function (res) {
+    //     if (res.code) {
+    //       //发起网络请求
+    //       userLogin(res.code, (res) => {
+    //          if(res.code === '0'){
+    //             _this.setState({
+    //               openid: res.data.openid
+    //             })
+    //          }
+    //       })
+    //     } else {
+    //       console.log('登录失败！' + res.errMsg)
+    //     }
+    //   }
+    // })
   }
 
   componentWillUnmount () { }
@@ -53,15 +56,27 @@ export default class Index extends Component {
     })
   }
 
+  teacherRegister = () => {
+    let params = {
+      url: '../register/index'
+    }
+    Taro.navigateTo(params).then(res => {
+    })
+  }
+
+  studentRegister = () => {
+
+  }
+
   render () {
     const { current } = this.state;
     return (
-      <AtTabBar
-        fixed
-        tabList={this.tabList}
-        onClick={this.handleClick.bind(this)}
-        current={current}
-      />
+      <View className="container">
+        {/* <BottomTabBar onClick={this.handleClick} current={current} /> */}
+
+        <InitPage studentHandel={this.studentRegister} teacherHandel={this.teacherRegister} />
+      </View>
+
     )
   }
 }

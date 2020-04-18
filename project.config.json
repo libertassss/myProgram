@@ -4,12 +4,13 @@
 	"description": "毕业设计",
 	"appid": "wxcc98f56b5c5a8b00",
 	"setting": {
-		"urlCheck": true,
-		"es6": false,
-		"postcss": false,
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
 		"minified": false,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": true,
 		"autoAudits": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -18,10 +19,12 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		}
+		},
+		"uglifyFileName": true
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"libVersion": "2.7.3",
 	"condition": {}
 }
