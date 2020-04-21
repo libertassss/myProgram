@@ -1,8 +1,8 @@
 
-import { Picker } from '@tarojs/components';
-import Taro, { Component } from '@tarojs/taro'
-import { AtInput, AtButton }  from 'taro-ui';
-import { userRegister, getDeptList, userLogin } from '../../server';
+import { Picker, View } from '@tarojs/components';
+import { Component } from '@tarojs/taro'
+import { AtInput, AtButton, AtToast }  from 'taro-ui';
+import { userRegister, getDeptList, deletUser } from '../../server';
 import './index.less';
 
 
@@ -20,28 +20,13 @@ class Register extends Component {
         nowClassIndex: 0,
         listIndex: 0,
         userName: '',
-        openid: 0
+        openid: 0,
+        token: 0
       }
     }
 
     componentDidMount(){
-      const _this = this;
-      Taro.login({
-        success: function (res) {
-          if (res.code) {
-            //发起网络请求
-            userLogin(res.code, (res) => {
-               if(res.code === '0'){
-                  _this.setState({
-                    openid: res.data.openid
-                  })
-               }
-            })
-          } else {
-            console.log('登录失败！' + res.errMsg)
-          }
-        }
-      })
+      
       let param = {
         parentId: 0
       };
@@ -87,7 +72,6 @@ class Register extends Component {
               classList: res.data,
               classChecked: res.data[0].deptName
             })
-
             getDeptList({parentId: res.data[0].id}, (res) => {
               if(res.code === '0'){
                 this.setState({
@@ -138,25 +122,50 @@ class Register extends Component {
     }
 
     register = () => {
-      const { openid, userName, listIndex, List } = this.state;
-        let params = {
-          openid: openid,
-          roleCode: 'student',
-          userName: userName,
-          deptId: List[listIndex].id
-        };
+      const { userName, listIndex, List } = this.state;
+      wx.getStorage({
+        key: 'openid',
+        success: (res) => {
+          let params = {
+            openid: res.data,
+            roleCode: 'student',
+            userName: userName,
+            deptId: List[listIndex].id
+          };
+          userRegister(params, res => {
+            console.log('res',res);
+            if(res.code === '0'){
+              const { token } = res.data;
+              this.setState({
+                token: token
+              },() => {
+                wx.switchTab({
+                  url: `pages/index/index`
+                })
+              });
+              wx.setStorage({
+                key: 'token',
+                data: token
+              });
+            }
+          })
+        }
+      })
+    }
 
-        userRegister(params, res => {
-          console.log('res',res);
-          if(res.code === '0'){
-            
-          }
-        })
-
+    deletregister = () => {
+      wx.getStorage({
+        key: 'openid',
+        success: (res) => {
+          deletUser(res.data, (msg) => {
+            console.log(msg)
+          })
+        }
+      })
     }
 
     render(){
-      const { deptList, classList, classChecked, selectorChecked, List, listChecked, userName } = this.state;
+      const { deptList, classList, classChecked, selectorChecked, List, listChecked, userName, token } = this.state;
       return (
         <View className="container">
           <AtInput
@@ -169,23 +178,29 @@ class Register extends Component {
           />
           <Picker mode='selector' rangeKey='deptName' range={deptList} onChange={this.onChangeDept}>
             <View className='picker'>
-              学院：<Text className="text-input">{selectorChecked}</Text>
+              <View className="picker-title">学院</View><Text className="text-input">{selectorChecked}</Text>
             </View>
           </Picker>
 
           <Picker mode='selector' rangeKey='deptName' range={classList} onChange={this.onChangeClass}>
             <View className='picker'>
-              专业<Text className="text-input">{classChecked}</Text>
+              <View className="picker-title">专业</View><Text className="text-input">{classChecked}</Text>
             </View>
           </Picker>
 
           <Picker mode='selector' rangeKey='deptName' range={List} onChange={this.onChange}>
             <View className='picker'>
-              班级<Text className="text-input">{listChecked}</Text>
+              <View className="picker-title">班级</View><Text className="text-input">{listChecked}</Text>
             </View>
           </Picker>
 
+        
           <AtButton type='primary' onClick={this.register}>注册</AtButton>
+       
+          <AtButton className="register-btn" type='primary' onClick={this.deletregister}>删除</AtButton>
+          {
+            token ? <AtToast isOpened text="注册成功" ></AtToast> : null
+          }
         </View>
       )
     }

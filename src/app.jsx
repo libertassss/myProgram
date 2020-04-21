@@ -23,14 +23,17 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/register/index'
+      'pages/register/index',
+      'pages/teacher_register/index',
+      'pages/teacher_page/index',
+      'pages/student_page/index'
     ],
     tabBar: {
       list: [{
         "pagePath": "pages/index/index",
         "text": "首页"
       }, {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/home/index",
         "text": "我的"
       }]
     },
