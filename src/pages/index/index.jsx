@@ -15,7 +15,8 @@ export default class Index extends Component {
       current: 0,
       openid: 0,
       deptList: [],
-      token: 0
+      token: 0,
+      isLogin: 0
     }
   }
 
@@ -29,7 +30,7 @@ export default class Index extends Component {
 
   componentDidShow () {
     const _this = this;
-    console.log('hhh')
+    // console.log('hhh')
     wx.getStorage({
       key: 'token',
       success: (res) => {
@@ -59,8 +60,10 @@ export default class Index extends Component {
       Taro.login({
         success: function (res) {
           if (res.code) {
+           
             //发起网络请求
             userLogin(res.code, (res) => {
+             console.log(res);
                if(res.code === '0'){
                   _this.setState({
                     openid: res.data.openid
@@ -104,12 +107,13 @@ export default class Index extends Component {
   }
 
   render () {
-    const { current, openid, token } = this.state;
-    console.log(!token);
+    const { openid, token, isLogin } = this.state;
     return (
       <View className="container">
         {
-          !token ? 
+          token ? 
+          <View>Welcom!</View>
+          :
             ( openid ? 
             <View>
               <AtToast isOpened text="登录成功" ></AtToast>
@@ -120,8 +124,8 @@ export default class Index extends Component {
               <AtButton type='primary' onClick={this.userLogin}>授权登录</AtButton>
             </View>
             )
-            :
-            <View>Welcom!</View>
+           
+            
         }
       </View>
 

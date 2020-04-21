@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import Index from './pages/index'
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
-
 import './app.less'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -43,7 +42,8 @@ class App extends Component {
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    "debug": true
   }
 
   // 在 App 类中的 render() 函数没有实际作用
