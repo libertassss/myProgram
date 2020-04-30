@@ -45,6 +45,10 @@ export default class StudentRegister extends Component {
                     key: 'token',
                     data: token
                   });
+                  wx.setStorage({
+                    key: 'roleType',
+                    data: 'teacher'
+                  })
                 }
               })
             }

@@ -5,6 +5,8 @@ import { AtTabBar, AtToast, AtButton } from 'taro-ui';
 import { userLogin, userRegister, getDeptList } from '../../server';
 import InitPage from '../../components/initPage';
 import BottomTabBar from '../../components/bottomTabBar';
+import StudentPage from '../../components/student_page';
+import TeacherPage from '../../components/teacher_page';
 
 
 export default class Index extends Component {
@@ -16,7 +18,8 @@ export default class Index extends Component {
       openid: 0,
       deptList: [],
       token: 0,
-      isLogin: 0
+      isLogin: 0,
+      roleType: null
     }
   }
 
@@ -37,6 +40,16 @@ export default class Index extends Component {
         if(res.data){
           _this.setState({
             token: res.data
+          })
+        }
+      }
+    })
+    wx.getStorage({
+      key: 'roleType',
+      success: (res) => {
+        if(res.data){
+          _this.setState({
+            roleType: res.data
           })
         }
       }
@@ -66,7 +79,9 @@ export default class Index extends Component {
              console.log(res);
                if(res.code === '0'){
                   _this.setState({
-                    openid: res.data.openid
+                    openid: res.data.openid,
+                    roleType: res.data.roleType,
+                    token: res.data.token
                   });
                   wx.setStorage({
                     key: 'openid',
@@ -107,12 +122,15 @@ export default class Index extends Component {
   }
 
   render () {
-    const { openid, token, isLogin } = this.state;
+    const { openid, token, isLogin, roleType } = this.state;
     return (
       <View className="container">
         {
-          token ? 
-          <View>Welcom!</View>
+         roleType ? (roleType === 'teacher' ? 
+          <TeacherPage token={token}/>
+          : 
+          <StudentPage token={token}/>
+          )
           :
             ( openid ? 
             <View>
@@ -124,8 +142,6 @@ export default class Index extends Component {
               <AtButton type='primary' onClick={this.userLogin}>授权登录</AtButton>
             </View>
             )
-           
-            
         }
       </View>
 

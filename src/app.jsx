@@ -24,8 +24,6 @@ class App extends Component {
       'pages/index/index',
       'pages/register/index',
       'pages/teacher_register/index',
-      'pages/teacher_page/index',
-      'pages/student_page/index',
       'pages/home/index'
     ],
     tabBar: {

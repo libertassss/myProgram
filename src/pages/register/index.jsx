@@ -140,13 +140,17 @@ class Register extends Component {
                 token: token
               },() => {
                 wx.switchTab({
-                  url: `pages/index/index`
+                  url: `../index/index`
                 })
               });
               wx.setStorage({
                 key: 'token',
                 data: token
               });
+              wx.setStorage({
+                key: 'roleType',
+                data: 'student'
+              })
             }
           })
         }
