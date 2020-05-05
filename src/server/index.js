@@ -36,6 +36,11 @@ const upLoadCourse = ( params, headers, success ) => {
     request(`course/save/upload`,params, 'POST', success, headers)
 }
 
+const saveOrUpdateHomeWork = (param, headers, success) => {
+    console.log(headers);
+    request(`homeWork/saveOrUpdate`, param, 'POST', success, headers);
+}
+
 export {
     userLogin,
     userRegister,
@@ -45,5 +50,6 @@ export {
     getHomeWork,
     addHomeWork,
     getCourse,
-    upLoadCourse
+    upLoadCourse,
+    saveOrUpdateHomeWork
 }

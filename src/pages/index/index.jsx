@@ -123,6 +123,7 @@ export default class Index extends Component {
 
   render () {
     const { openid, token, isLogin, roleType } = this.state;
+    console.log('roleType', roleType);
     return (
       <View className="container">
         {
