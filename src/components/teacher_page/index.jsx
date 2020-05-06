@@ -1,7 +1,7 @@
 import { Component } from '@tarojs/taro'
 import './index.less';
-import { getCourse, upLoadCourse, getHomeWork, getDeptList, saveOrUpdateHomeWork } from '../../server';
-import { AtTabBar, AtButton, AtNoticebar, AtFab, AtCard, AtInput, AtForm } from 'taro-ui';
+import { getCourse, upLoadCourse, getHomeWork, getDeptList, saveOrUpdateHomeWork, getHomeWorkList } from '../../server';
+import { AtTabBar, AtButton, AtNoticebar, AtFab, AtCard, AtInput, AtForm, AtToast } from 'taro-ui';
 import { View } from '@tarojs/components';
 import Register from '../../pages/register';
 export default class TeacherPage extends Component {
@@ -21,8 +21,9 @@ export default class TeacherPage extends Component {
             listIndex: 0,
             addHomeWork: false,
             homeWorkName: '',
-            homeWorkRequest: ''
-
+            homeWorkRequest: '',
+            isOpened: false,
+            homeWorkList: []
         }
     }
 
@@ -78,7 +79,7 @@ export default class TeacherPage extends Component {
             success (res) {
               const tempFilePaths = (res.tempFiles)[0];
               wx.uploadFile({
-                url: `http://120.24.42.240:8085/course/save/upload`,
+                url: `http://wjw.mynatapp.cc/course/save/upload`,
                 filePath: tempFilePaths.path,
                 name: 'file',
                 formData: {
@@ -155,7 +156,22 @@ export default class TeacherPage extends Component {
     }
 
     SearchHomeWork = () => {
-       
+        const { token } = this.props;
+        const { List, listIndex } = this.state;
+        let param = {
+            deptId: List[listIndex].id
+        }
+        this.setState({
+            addHomeWork: false
+        })
+        getHomeWorkList(param,{'Authorization': `Bearer ${token}`}, res => {
+            console.log(res);
+            if(res.code === '0'){
+                this.setState({
+                    homeWorkList: res.data
+                })
+            }
+        })
     }
 
     handleChangeRequest = (value) => {
@@ -178,6 +194,16 @@ export default class TeacherPage extends Component {
             deptId: List[listIndex].id
         }
         saveOrUpdateHomeWork(params,{'Authorization': `Bearer ${token}`}, res => {
+            if(res.code === '0'){
+                this.setState({
+                    isOpened: true
+                });
+                setTimeout(()=>{
+                    this.setState({
+                        isOpened: false
+                    })
+                },2000)
+            }
             console.log('res',res);
         } )
     }
@@ -195,7 +221,6 @@ export default class TeacherPage extends Component {
    
     renderContent = () => {
         const { current, courseList, deptList, selectorChecked, classList, classChecked, List, listChecked, homeWorkName, homeWorkRequest, addHomeWork } = this.state;
-        console.log(addHomeWork);
         switch(current){
             case 0:
                 {
@@ -264,7 +289,7 @@ export default class TeacherPage extends Component {
     }
 
     render(){
-        const { current, addHomeWork, homeWorkName, homeWorkRequest } = this.state;
+        const { current, addHomeWork, homeWorkName, homeWorkRequest, isOpened, homeWorkList } = this.state;
         return (
             <View className="container">
                 <AtTabBar
@@ -305,6 +330,23 @@ export default class TeacherPage extends Component {
                                 </AtForm> 
                             </View> : null
                         }
+                        {current ===1 && !addHomeWork && <View>
+                                {
+                                    homeWorkList.map((item,index) => 
+                                        <AtCard
+                                            key={item.id}
+                                            note=''
+                                            extra={item.createTime}
+                                            title={item.homeWorkName}
+                                            thumb='http://www.logoquan.com/upload/list/20180421/logoquan15259400209.PNG'
+                                        >
+                                            {item.homeWorkRequest}
+                                        </AtCard>
+                                    )
+                                }
+                            </View>
+                        }
+                        <AtToast isOpened={isOpened} text="提交成功" ></AtToast>
             </View>
         )
     }

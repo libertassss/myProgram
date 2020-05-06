@@ -41,6 +41,10 @@ const saveOrUpdateHomeWork = (param, headers, success) => {
     request(`homeWork/saveOrUpdate`, param, 'POST', success, headers);
 }
 
+const getHomeWorkList = (param, headers, success) => {
+    request(`homeWork/findList`, param, 'POST', success, headers);
+}
+
 export {
     userLogin,
     userRegister,
@@ -51,5 +55,6 @@ export {
     addHomeWork,
     getCourse,
     upLoadCourse,
-    saveOrUpdateHomeWork
+    saveOrUpdateHomeWork,
+    getHomeWorkList
 }
