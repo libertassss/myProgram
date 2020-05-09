@@ -1,7 +1,7 @@
 import { Component } from '@tarojs/taro'
 import './index.less';
 import { getCourse, upLoadCourse, getHomeWork, getDeptList, saveOrUpdateHomeWork, getHomeWorkList } from '../../server';
-import { AtTabBar, AtButton, AtNoticebar, AtFab, AtCard, AtInput, AtForm, AtToast } from 'taro-ui';
+import { AtTabBar, AtButton, AtNoticebar, AtFab, AtCard, AtInput, AtForm, AtToast,AtTag } from 'taro-ui';
 import { View } from '@tarojs/components';
 import Register from '../../pages/register';
 export default class TeacherPage extends Component {
@@ -288,6 +288,14 @@ export default class TeacherPage extends Component {
         }
     }
 
+    goDetail = (id) => {
+        const { token } = this.props;
+        let params = {
+            url: `../../pages/homework_detail/index?id=${id}&token=${token}`
+        }
+        Taro.navigateTo(params).then(res => {})
+    }
+
     render(){
         const { current, addHomeWork, homeWorkName, homeWorkRequest, isOpened, homeWorkList } = this.state;
         return (
@@ -340,7 +348,10 @@ export default class TeacherPage extends Component {
                                             title={item.homeWorkName}
                                             thumb='http://www.logoquan.com/upload/list/20180421/logoquan15259400209.PNG'
                                         >
-                                            {item.homeWorkRequest}
+                                            <View>{item.homeWorkRequest}</View>
+                                            <View>
+                                                <AtTag size='small' circle onClick={() => this.goDetail(item.id)}>查看作业</AtTag>
+                                            </View>
                                         </AtCard>
                                     )
                                 }

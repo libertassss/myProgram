@@ -45,6 +45,25 @@ const getHomeWorkList = (param, headers, success) => {
     request(`homeWork/findList`, param, 'POST', success, headers);
 }
 
+const saveMsg = (param, headers, success) => {
+    request(`homeWorkComment/save`, param, 'POST', success, headers);
+}
+
+const saveHomeWork = (param, headers, success) => {
+    request(`myHomeWork/save/upload`, param, 'POST', success, headers);
+}
+
+const homeworkDetai = (param, headers, success) => {
+    console.log(param);
+    request( `myHomeWork/findList`, param, 'POST', success, headers);
+}
+
+const grade = (param, headers, success) => {
+    request(`myHomeWork/grade`, param, 'POST', success, headers);
+}
+
+
+
 export {
     userLogin,
     userRegister,
@@ -56,5 +75,9 @@ export {
     getCourse,
     upLoadCourse,
     saveOrUpdateHomeWork,
-    getHomeWorkList
+    getHomeWorkList,
+    saveMsg,
+    saveHomeWork,
+    homeworkDetai,
+    grade
 }
