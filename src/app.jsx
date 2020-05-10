@@ -25,7 +25,6 @@ class App extends Component {
       'pages/register/index',
       'pages/teacher_register/index',
       'pages/home/index',
-      'pages/add_homework/index',
       'pages/homework_detail/index',
       'pages/student_detail/index'
     ],
