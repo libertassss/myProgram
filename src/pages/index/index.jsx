@@ -33,7 +33,7 @@ export default class Index extends Component {
 
   componentDidShow () {
     const _this = this;
-    // console.log('hhh')
+    console.log('hhh')
     wx.getStorage({
       key: 'token',
       success: (res) => {

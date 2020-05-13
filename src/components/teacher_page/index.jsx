@@ -79,7 +79,7 @@ export default class TeacherPage extends Component {
             success (res) {
               const tempFilePaths = (res.tempFiles)[0];
               wx.uploadFile({
-                url: `http://wjw.mynatapp.cc/course/save/upload`,
+                url: `http://172.20.10.13:8085/course/save/upload`,
                 filePath: tempFilePaths.path,
                 name: 'file',
                 formData: {

@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-const prefix = `http://wjw.mynatapp.cc`;
+const prefix = `http://172.20.10.13:8085`;
 
 const request = ( url, data = {}, method = 'GET',cb, header) => {
     Taro.request(
@@ -13,7 +13,7 @@ const request = ( url, data = {}, method = 'GET',cb, header) => {
               if(statusCode === 200){
                 cb && cb(data);
               }else{
-                  console.log(-1)
+                  console.log(res)
               }
           }
         }

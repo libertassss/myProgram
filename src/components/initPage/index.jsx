@@ -14,7 +14,8 @@ export default class InitPage extends Component{
     }
 
     render(){
-        const { studentHandel = () => {}, teacherHandel = () => {} } = props;
+        console.log(this.props);
+        const { studentHandel = () => {}, teacherHandel = () => {} } = this.props;
         return (
             <View className="init-page">
             <View className="teacher-box">

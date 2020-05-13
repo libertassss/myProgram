@@ -14,7 +14,7 @@ export default class BottomTabBar extends Component{
     }
 
     render(){
-        const { onClick = () => {}, current } = props;
+        const { onClick = () => {}, current } = this.props;
         return (
             <AtTabBar
             fixed
