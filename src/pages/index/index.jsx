@@ -33,7 +33,6 @@ export default class Index extends Component {
 
   componentDidShow () {
     const _this = this;
-    console.log('hhh')
     wx.getStorage({
       key: 'token',
       success: (res) => {
@@ -86,6 +85,14 @@ export default class Index extends Component {
                   wx.setStorage({
                     key: 'openid',
                     data: res.data.openid
+                  });
+                  wx.setStorage({
+                    key: 'token',
+                    data: res.data.token
+                  });
+                  wx.setStorage({
+                    key: 'roleType',
+                    data: res.data.roleType
                   });
                }
             })

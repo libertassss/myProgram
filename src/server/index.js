@@ -62,6 +62,22 @@ const grade = (param, headers, success) => {
     request(`myHomeWork/grade`, param, 'POST', success, headers);
 }
 
+const getCode = (param ,headers, success) => {
+    request(`signIn/createCode`,param, 'POST', success, headers);
+}
+
+const endCode = (param, headers, success) => {
+    request(`signIn/logoutCode`, param, 'POST', success, headers)
+}
+
+const signCode = (param, headers, success) => {
+    request(`signIn/sign`, param, 'POST', success, headers);
+}
+
+const getCodeList = (param, headers, success) => {
+    request( `signIn/findList`, param, 'POST', success, headers)
+}
+
 
 
 export {
@@ -79,5 +95,9 @@ export {
     saveMsg,
     saveHomeWork,
     homeworkDetai,
-    grade
+    grade,
+    getCode,
+    endCode,
+    signCode,
+    getCodeList
 }

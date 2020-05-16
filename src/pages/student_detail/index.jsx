@@ -5,7 +5,7 @@ export default class StudentDetail extends Component{
         super(props);
 
         this.state = {
-
+            
         }
     }
 
