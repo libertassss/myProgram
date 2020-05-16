@@ -75,6 +75,13 @@ export default class Home extends Component {
     endCode = () => {
         const { token } = this.state;
             endCode({},{'Authorization': `Bearer ${token}`}, res => {
+                getCodeList({},{'Authorization': `Bearer ${token}`}, res => {
+                    if(res.code === '0'){
+                        this.setState({
+                            studentList: res.data
+                        })
+                    }
+                })
                 if(res.code === '0'){
                     this.setState({
                         endCode: true
@@ -110,7 +117,7 @@ export default class Home extends Component {
     }
 
     render(){
-        const { token, roleType, getCode, code, endCode, studentCode, text } = this.state;
+        const { token, roleType, getCode, code, endCode, studentCode, text, studentList } = this.state;
         console.log('===',roleType)
         return (
             <View className="container">
@@ -126,6 +133,14 @@ export default class Home extends Component {
                         <View>
                             <AtButton type='primary' onClick={this.getCode}>开始签到</AtButton>
                             <AtButton type='primary' onClick={this.endCode}>结束签到</AtButton>
+                            <AtList>
+                                {
+                                    studentList && studentList.length > 0 && studentList.map((item,index) =>
+                                        <View key={index}>{item.name}</View>
+                                    )
+                
+                                }
+                            </AtList>
                         </View>
                     }
                    
@@ -156,11 +171,7 @@ export default class Home extends Component {
 
             <AtToast isOpened={endCode} text={text} ></AtToast>
 
-            <AtList>
-                {
-
-                }
-            </AtList>
+            
 
 
             </View>

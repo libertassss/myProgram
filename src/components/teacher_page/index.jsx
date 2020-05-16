@@ -3,7 +3,7 @@ import './index.less';
 import { getCourse, upLoadCourse, getHomeWork, getDeptList, saveOrUpdateHomeWork, getHomeWorkList } from '../../server';
 import { AtTabBar, AtButton, AtNoticebar, AtFab, AtCard, AtInput, AtForm, AtToast,AtTag } from 'taro-ui';
 import { View } from '@tarojs/components';
-import Register from '../../pages/register';
+import prefix from '../../server/config';
 export default class TeacherPage extends Component {
     constructor(props){
         super(props);
@@ -79,7 +79,7 @@ export default class TeacherPage extends Component {
             success (res) {
               const tempFilePaths = (res.tempFiles)[0];
               wx.uploadFile({
-                url: `http://wjw.mynatapp.cc/course/save/upload`,
+                url: `${prefix}/course/save/upload`,
                 filePath: tempFilePaths.path,
                 name: 'file',
                 formData: {

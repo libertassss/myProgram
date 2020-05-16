@@ -2,6 +2,7 @@ import { Component } from '@tarojs/taro';
 import './index.less';
 import { getHomeWorkList, saveMsg, saveHomeWork } from '../../server';
 import { AtCard, AtTag, AtFloatLayout, AtTextarea, AtButton, AtToast } from 'taro-ui';
+import prefix from '../../server/config';
 export default class StudentPage extends Component {
     constructor(props){
         super(props);
@@ -66,16 +67,21 @@ export default class StudentPage extends Component {
         })
     }
 
-    submitHomeWork = (id) => {
+    submitHomeWork = (id, type="submit") => {
         const { token } = this.props;
         const _this = this;
+        let url = "myHomeWork/save/upload";
+        if(type == 'update'){
+            url= `myHomeWork/update/upload`;
+        }
+        if(type == 'submit')
         wx.chooseMessageFile({
             count: 10,
             type: 'all',
             success (res) {
               const tempFilePaths = (res.tempFiles)[0];
               wx.uploadFile({
-                url: `http://wjw.mynatapp.cc/myHomeWork/save/upload`,
+                url: `${prefix}/${url}`,
                 filePath: tempFilePaths.path,
                 name: 'file',
                 formData: {
@@ -89,6 +95,32 @@ export default class StudentPage extends Component {
                     _this.setState({
                         isLeaveMsg: true,
                         text: '提交作业成功'
+                    })
+                }
+              })
+            }
+        })
+        else
+        wx.chooseMessageFile({
+            count: 10,
+            type: 'all',
+            success (res) {
+              const tempFilePaths = (res.tempFiles)[0];
+              wx.uploadFile({
+                url: `${prefix}/${url}`,
+                filePath: tempFilePaths.path,
+                name: 'file',
+                formData: {
+                    'id': id,
+                    file: tempFilePaths
+                },
+                header:{
+                    'Authorization': `Bearer ${token}`
+                },
+                success: (res) => {
+                    _this.setState({
+                        isLeaveMsg: true,
+                        text: '更新作业成功'
                     })
                 }
               })
@@ -121,7 +153,7 @@ export default class StudentPage extends Component {
                         <View className="tag-list">
                             {/* <AtTag size='small' circle onClick={() => this.leaveMsg(item.id)}>留言</AtTag> */}
                             <AtTag size='small' circle onClick={() => this.submitHomeWork(item.id)}>提交作业</AtTag>
-                            <AtTag size='small' circle>作业更新</AtTag>
+                            <AtTag size='small' circle onClick={() => this.submitHomeWork(item.id) }>作业更新</AtTag>
                             <AtTag size='small' circle  onClick={() => this.goDetai(item.id)}>查看留言</AtTag>
                         </View>
                         

@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-const prefix = `http://wjw.mynatapp.cc`;
+export default prefix = `http://10.1.4.254:8085`;
 
 const request = ( url, data = {}, method = 'GET',cb, header) => {
     Taro.request(
